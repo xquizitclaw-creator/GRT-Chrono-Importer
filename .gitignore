@@ -1,0 +1,14 @@
+# Built/original binaries (zips are attached to GitHub Releases)
+GRTChronoImporter/GRTChronoImporter.exe
+GRTChronoImporter/_internal/
+*.zip
+dist/
+build/
+*.spec
+.venv/
+__pycache__/
+.DS_Store
+
+# User data and screenshots
+*.grtload
+/*.png

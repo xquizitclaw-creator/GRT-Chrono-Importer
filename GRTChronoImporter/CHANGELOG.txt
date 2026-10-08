@@ -1,0 +1,114 @@
+1.1.1
+-----
+- Changed: the suggested save name keeps the original file name as
+  written (spaces, periods, brackets) instead of converting it to
+  underscores. Only characters Windows doesn't allow in file names are
+  removed. The date/time is appended as "2026-10-08 0711", and a stamp
+  left by an earlier import is replaced instead of stacking up.
+
+
+1.1.0
+-----
+- Fixed: ladders with uneven step sizes (e.g. 1.0 gr steps low, 0.4 gr
+  steps near the top) were imported as an even ladder, so charge
+  weights were wrong, the Sim line didn't plot, and the velocity
+  graph had a dogleg.
+- Ladder mode now reads the actual per-step increments from the base
+  .grtload (<laddersteps>). With no base file, rung charges come from
+  the selected sim JSON. Editing top charge / step / count by hand
+  switches back to an even ladder.
+- The saved file's ladder steps now match the imported rungs.
+- Chrono vs Sim chart places points by charge weight, so uneven
+  steps plot to scale.
+
+
+1.0.0
+-----
+First stable release.
+- Imports Garmin Xero C1 Pro and Athlon Rangecraft chronograph files
+  (CSV/XLS/XLSX) into GRT.
+- Four import modes: Standard, Ladder, Sessions, and Chrono vs Sim
+  (with a rendered comparison chart).
+- Handles comma number formats, BOM, footer trimming, and metadata-
+  block headers.
+- Pure Python/Tkinter/Pillow build.
+
+
+GRT Chrono Importer - Changelog
+===============================
+
+Imports Garmin Xero C1 Pro / Athlon Rangecraft chronograph files
+(CSV / XLS / XLSX) into Gordon's Reloading Tool as Imported
+Measurement, Imported Ladder, or Imported Sessions tabs, with an
+optional Chrono vs Sim comparison.
+
+
+0.9.6-beta
+----------
+- Changed: new plugin icon (shot-up bullseye target). Photo at
+  32x32; a clean drawn ring target at 16x16 for legibility.
+  Icons shown in their own colors (icon_colorize disabled).
+
+
+0.9.5-beta
+----------
+- Changed: Chrono vs Sim chart now rendered at 2000x1200 (was
+  1000x600) for a crisper image, matching the web tool. Fonts,
+  lines, and layout scale proportionally.
+
+
+0.9.4-beta
+----------
+- New: Sessions mode. Reads a multi-sheet Garmin file (one worksheet
+  per shooting session) and creates one "Imported Sessions" tab with
+  one charge per session. Useful for a multi-day event in one file.
+- Fixed: Athlon Rangecraft .xlsx files would not import ("no velocity
+  data"). The exporter places a large metadata/summary block above the
+  shot table, so the header row sits far down the sheet. Header
+  detection now scans the whole sheet and only accepts a true column
+  header (a velocity column plus another data column), ignoring
+  metadata labels such as "Velocity:" or "Average velocity".
+
+
+0.9.3-beta
+----------
+- Changed: Ladder mode now assigns one file per charge explicitly.
+  Each charge weight gets its own row (highest at top) with its own
+  file selector, instead of relying on multi-select order. This
+  removes the chance of a file landing on the wrong charge.
+
+
+0.9.2-beta
+----------
+- New: Chrono vs Sim chart polish - proper V-subscript-0 rendering in
+  the title, axis, legend, and caption, plus a descriptive caption
+  line. Chart is drawn with Pillow (no matplotlib dependency).
+- Fixed: New Garmin exports quote thousands separators (e.g.
+  "2,885.8"). Number parsing now handles US thousands+decimal,
+  European decimal comma, and plain formats, while still reading the
+  older non-comma exports.
+
+
+0.9.1-beta (internal)
+---------------------
+- Added: Chrono vs Sim. Supply a GRT "Export simulation results" JSON
+  in Ladder mode to add an Analysis tab (per-charge measured-vs-
+  simulated velocity, deltas, auto best-node by lowest SD) and a
+  Chrono vs Sim chart tab (measured average vs simulated V0).
+- Fixed: chart now embedded inside a <gallery> element so GRT renders
+  it as a tab.
+
+
+0.9.0-beta
+----------
+- First external beta.
+- Standard mode: import one or more files into an Imported Measurement
+  tab; charge weight read from a loaded base .grtload.
+- Ladder mode: even-step ladder matching GRT's native model; top
+  charge and step size auto-filled from a base ladder file.
+- Auto-generated, timestamped output filenames.
+- Garmin and Athlon CSV / XLS / XLSX support, with summary-footer
+  trimming and BOM handling.
+- Optional merge into an existing base .grtload (original tabs kept).
+- Requires launch from within GRT; connects over the local plugin
+  socket and offers to open the result via Load_File.

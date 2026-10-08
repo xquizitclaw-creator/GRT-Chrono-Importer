@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+<!--
+GRT plugin manifest - GRT Chrono Importer
+
+Native plugin. launch-windows / launch-linux point at the frozen executable
+for each OS. launch-type "ondemand": GRT launches the plugin when the user
+clicks the toolbar button / menu item, passing the connection commandline.
+The plugin connects back, builds a .grtload, and asks GRT to open it via the
+Load_File command.
+-->
+
+  <plugin
+          name           = "GRT Chrono Importer"
+          id             = "com.grt.plugin.chronoimport"
+          version        = "1.1.1"
+          provider       = "XquiziT Arms"
+          description    = "Import Garmin Xero C1 Pro / Athlon Rangecraft chronograph data (CSV/XLS/XLSX) into GRT as an Imported Measurement."
+          launch-windows = "GRTChronoImporter.exe"
+          launch-linux   = "GRTChronoImporter"
+          launch-type    = "ondemand"
+          launch-args    = ""
+          start-timeout  = "5.0"
+          enabled        = "true"
+  >
+    <registerevent>
+      <event name="ColorPresetChange" enabled="true" />
+      <event name="TabSwitch" enabled="false" />
+      <event name="TabDataChange" enabled="false" />
+      <event name="TabUnitChange" enabled="false" />
+      <event name="TabClosed" enabled="false" />
+      <event name="WindowClosed" enabled="true" />
+    </registerevent>
+
+    <menu autoenable="true" icon="media/icons/icn_chrono_16x16.png" icon_colorize="false">
+      <menuitem id="start" label="Chrono Importer" enabled="true" checked="false" icon="media/icons/icn_chrono_16x16.png"/>
+    </menu>
+
+    <toolbar>
+      <toolbaritem
+        id            = "toolbar_main"
+        label         = "GRT Chrono Importer"
+        tooltip       = "Import Garmin / Athlon chronograph files into GRT."
+        icon          = "media/icons/icn_chrono_32x32.png"
+        icon_colorize = "false"
+        enabled       = "true"
+      />
+    </toolbar>
+
+  </plugin>
+</GordonsReloadingTool>

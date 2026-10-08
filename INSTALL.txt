@@ -1,0 +1,12 @@
+GRT Chrono Importer 1.1.1
+
+Fixes ladders with uneven step sizes: charge weights are now read from the
+ladder steps in your .grtload (or from the sim JSON), so the Sim line plots
+and the chart no longer doglegs.
+
+Install:
+1. Close GRT.
+2. Open %USERPROFILE%\GordonsReloadingTool\plugins\ and delete the old
+   GRTChronoImporter folder.
+3. Copy the GRTChronoImporter folder from this zip into that plugins folder.
+4. Start GRT.
