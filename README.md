@@ -25,6 +25,11 @@ date and time, e.g. `... 10 Step Ladder (Raw) 2026-10-08 0716.grtload`.
 
 ## Install
 
+You need GRT installed first. grtools.de no longer offers the download.
+Get GRT from the [download channel](https://discordapp.com/channels/621039234404581406/1201641174889414841)
+on the GRT Discord. If the link doesn't open, join the server first with
+the [invite](https://discord.gg/3FEYWG4).
+
 1. Download the zip from [Releases](../../releases).
 2. Close GRT.
 3. Open `%USERPROFILE%\GordonsReloadingTool\plugins\` and delete any old
