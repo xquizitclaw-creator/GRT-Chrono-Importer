@@ -26,6 +26,20 @@ import chrono_import
 from grt_ipc import GRTClient, parse_args_for_port
 
 
+def _plugin_version():
+    """Version from the GRT manifest beside the exe (or the repo copy when run from source)."""
+    if getattr(sys, "frozen", False):
+        folder = os.path.dirname(sys.executable)
+    else:
+        folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "GRTChronoImporter")
+    try:
+        with open(os.path.join(folder, "com.grt.plugin.xml"), encoding="utf-8") as f:
+            m = re.search(r'\bversion\s*=\s*"([^"]+)"', f.read().split("<plugin", 1)[1])
+        return m.group(1) if m else None
+    except (OSError, IndexError):
+        return None
+
+
 class ImporterApp:
     def __init__(self, root, client):
         self.root = root
@@ -38,7 +52,8 @@ class ImporterApp:
         self._setting_ladder = False
         self.last_output = None
 
-        root.title("GRT Chrono Importer")
+        version = _plugin_version()
+        root.title(f"GRT Chrono Importer {version}" if version else "GRT Chrono Importer")
         root.geometry("600x640")
         root.minsize(560, 600)
 

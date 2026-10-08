@@ -1,4 +1,6 @@
-GRT Chrono Importer 1.1.1
+GRT Chrono Importer 1.1.2
+
+The version now shows in the importer window title.
 
 Fixes ladders with uneven step sizes: charge weights are now read from the
 ladder steps in your .grtload (or from the sim JSON), so the Sim line plots
