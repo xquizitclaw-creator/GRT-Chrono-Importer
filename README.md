@@ -1,6 +1,6 @@
 # GRT Chrono Importer
 
-A plugin for [Gordon's Reloading Tool](https://grtools.de) (GRT). It imports
+A plugin for [Gordon's Reloading Tool](https://www.grtools.de/doku.php?id=grtools:start) (GRT). It imports
 chronograph data from the Garmin Xero C1 Pro or Athlon Rangecraft (CSV, XLS
 or XLSX) into GRT as an Imported Measurement.
 
