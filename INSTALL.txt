@@ -1,6 +1,7 @@
-GRT Chrono Importer 1.1.2
+GRT Chrono Importer 1.1.3
 
-The version now shows in the importer window title.
+SD now matches GRT: it is the sample standard deviation (n-1). Your
+chronograph may show a slightly smaller SD for the same shots.
 
 Fixes ladders with uneven step sizes: charge weights are now read from the
 ladder steps in your .grtload (or from the sim JSON), so the Sim line plots

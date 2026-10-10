@@ -352,7 +352,8 @@ def compute_stats(vel_ms, file_unit):
     else:
         series = list(vel_ms)
     avg = statistics.fmean(series)
-    sd = statistics.pstdev(series) if len(series) > 1 else 0.0
+    # sample SD (n-1), as GRT shows it; Garmin and some chronographs show the population SD
+    sd = statistics.stdev(series) if len(series) > 1 else 0.0
     return {
         "avg": avg,
         "sd": sd,
