@@ -1,3 +1,14 @@
+1.1.4
+-----
+- Fixed: two imports from the same base file inside the same minute
+  suggested the same output file name. Accepting it a second time
+  overwrote the file, and GRT then answered the open request with the
+  first import's results instead of simulating the new numbers --
+  GRT reuses an already-open tab's results for a path it already has
+  open. The suggested name now carries seconds, so every import is a
+  new file. Names stamped by older versions are still recognised and
+  replaced rather than stacked.
+
 1.1.3
 -----
 - Changed: SD is now the sample standard deviation (n-1), the same

@@ -487,10 +487,14 @@ class ImporterApp:
         # the load). Only drop characters Windows forbids in file names, and
         # any timestamp a previous import appended, so stamps don't pile up.
         stem = re.sub(r'[<>:"/\\|?*\x00-\x1f]', "", stem)
-        stem = re.sub(r"[ _]+(\d{8}_\d{4}|\d{4}-\d{2}-\d{2} \d{4})$", "", stem)
+        stem = re.sub(r"[ _]+(\d{8}_\d{4}|\d{4}-\d{2}-\d{2} \d{4}(\d{2})?)$", "", stem)
         stem = stem.strip(" .") or "ChronoImport"
 
-        stamp = datetime.now().strftime("%Y-%m-%d %H%M")
+        # Seconds, not just minutes: GRT answers Load_File on a path it already has
+        # open with that tab's existing results instead of simulating again, so two
+        # imports of the same base file must never suggest the same name. At minute
+        # resolution they did, and the second import opened the first one's numbers.
+        stamp = datetime.now().strftime("%Y-%m-%d %H%M%S")
         default_name = f"{stem} {stamp}.grtload"
 
         init_dir = os.path.dirname(self.base_path) if self.base_path else ""
