@@ -12,3 +12,4 @@ __pycache__/
 # User data and screenshots
 *.grtload
 /*.png
+.worktrees/
