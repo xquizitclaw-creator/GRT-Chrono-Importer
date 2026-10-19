@@ -28,9 +28,12 @@ and `launch-linux` entries for those builds.
 
 - **macOS (Apple silicon):** `brew install python-tk@3.12`, then
   `PYTHON=/opt/homebrew/bin/python3.12 ./build.sh`. Output:
-  `dist/GRTChronoImporter` (arm64, ad-hoc signed by PyInstaller). An Intel
-  build needs an x86_64 Python with Tk, such as the python.org universal2
-  installer.
+  `dist/GRTChronoImporter` (arm64, ad-hoc signed by PyInstaller).
+- **macOS (Intel):** on an Apple silicon Mac with Rosetta
+  (`softwareupdate --install-rosetta --agree-to-license`), run
+  `uv python install cpython-3.12-macos-x86_64-none`, then
+  `./build-mac-intel.sh`. Output: `dist/osx-x64/GRTChronoImporter` (x86_64).
+  `PYTHON=<x86_64 python3.12>` uses another Intel Python with Tk.
 - **Linux x64:** `./build-linux.sh` (needs Docker). It builds in Debian
   bullseye (glibc 2.31), so it runs on Ubuntu 20.04 and newer. Output:
   `dist/linux-x64/GRTChronoImporter`. Tested headless on Ubuntu 24.04 and
