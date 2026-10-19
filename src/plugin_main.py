@@ -1,7 +1,7 @@
 """
 plugin_main.py - GRT Chrono Importer plugin entry point.
 
-Launched by GRT as:   GRTChronoImporter.exe --ipcport <port>
+Launched by GRT as:   GRTChronoImporter.exe --ipcport <port>   (Linux: --ipcfile <path>)
 
 Flow:
   1. Connect back to GRT on 127.0.0.1:<port>. The plugin must be launched from
@@ -23,7 +23,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
 import chrono_import
-from grt_ipc import GRTClient, parse_args_for_port
+from grt_ipc import GRTClient, parse_connect_args
 
 
 def _plugin_version():
@@ -550,29 +550,29 @@ class ImporterApp:
 
 
 def main():
-    port = parse_args_for_port(sys.argv)
+    address = parse_connect_args(sys.argv)
     root = tk.Tk()
 
-    if not port:
+    if not address:
         root.withdraw()
         messagebox.showerror(
             "GRT Chrono Importer",
-            "This is a GRT plugin. Please launch it from inside Gordon's Reloading "
-            "Tool using the Chrono Importer toolbar button or menu item, not by "
+            "This is a plugin. Please launch it from inside GRT or GRTMultiPlatform "
+            "using the Chrono Importer toolbar button or menu item, not by "
             "running the program directly.",
         )
         root.destroy()
         return
 
-    client = GRTClient(port)
+    client = GRTClient(address)
     try:
         client.connect(timeout=5.0)
     except OSError:
         root.withdraw()
         messagebox.showerror(
             "GRT Chrono Importer",
-            "Could not connect to GRT. Please close this and re-launch the plugin "
-            "from the Chrono Importer button inside GRT.",
+            "Could not connect to GRT or GRTMultiPlatform. Please close this and "
+            "re-launch the plugin from the Chrono Importer button inside it.",
         )
         root.destroy()
         return

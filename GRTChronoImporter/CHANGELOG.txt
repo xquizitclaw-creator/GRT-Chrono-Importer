@@ -1,3 +1,16 @@
+1.1.5
+-----
+- Fixed: on Linux the plugin never connected. GRTMultiPlatform starts
+  plugins there with --ipcfile (a Unix socket file, GRT's Linux
+  transport), and the plugin only understood --ipcport. It now
+  understands both.
+- Fixed: the Apple silicon Mac build only ran on macOS 26. It is now
+  built with a portable Python and runs on macOS 11 and newer.
+- Changed: the host now waits up to 15 seconds for the plugin to
+  start (was 5), so a slow first start is not reported as a failure.
+- Changed: the "launch it from inside GRT" messages also name
+  GRTMultiPlatform.
+
 1.1.4
 -----
 - Fixed: two imports from the same base file inside the same minute

@@ -1,7 +1,8 @@
 """
 grt_ipc.py - GRT plugin IPC client.
 
-GRT launches the plugin with `--ipcport <port>` (Windows: TCP on 127.0.0.1).
+GRT launches the plugin with `--ipcport <port>` (TCP on 127.0.0.1) or, on Linux,
+`--ipcfile <path>` (a Unix socket file), as GRT's plugin API documents.
 Messages are JSON objects sent over the socket. The format observed in the
 reference plugins is a single JSON object per command, e.g.:
 
@@ -27,17 +28,22 @@ import socket
 import threading
 
 
-def parse_args_for_port(argv):
-    """Return the int port from `--ipcport <port>` (or None)."""
+def parse_connect_args(argv):
+    """Where to connect: ("tcp", port) from `--ipcport`, ("unix", path) from `--ipcfile`, or None."""
     for i, a in enumerate(argv):
-        if a == "--ipcport" and i + 1 < len(argv):
-            try:
-                return int(argv[i + 1])
-            except ValueError:
+        for flag in ("--ipcport", "--ipcfile"):
+            if a == flag:
+                value = argv[i + 1] if i + 1 < len(argv) else None
+            elif a.startswith(flag + "="):
+                value = a.split("=", 1)[1]
+            else:
+                continue
+            if not value:
                 return None
-        if a.startswith("--ipcport="):
+            if flag == "--ipcfile":
+                return ("unix", value)
             try:
-                return int(a.split("=", 1)[1])
+                return ("tcp", int(value))
             except ValueError:
                 return None
     return None
@@ -87,9 +93,8 @@ def _split_json_objects(buf):
 class GRTClient:
     """Minimal client for the GRT plugin socket protocol."""
 
-    def __init__(self, port, host="127.0.0.1", on_event=None):
-        self.port = port
-        self.host = host
+    def __init__(self, address, on_event=None):
+        self.address = address   # from parse_connect_args
         self.on_event = on_event
         self.sock = None
         self._rx_thread = None
@@ -98,7 +103,18 @@ class GRTClient:
         self.connected = False
 
     def connect(self, timeout=5.0):
-        self.sock = socket.create_connection((self.host, self.port), timeout=timeout)
+        kind, where = self.address
+        if kind == "unix":
+            self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            self.sock.settimeout(timeout)
+            try:
+                self.sock.connect(where)
+            except OSError:
+                self.sock.close()
+                self.sock = None
+                raise
+        else:
+            self.sock = socket.create_connection(("127.0.0.1", where), timeout=timeout)
         self.sock.settimeout(None)
         self.connected = True
         self._running = True

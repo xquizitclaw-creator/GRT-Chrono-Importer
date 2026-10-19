@@ -26,18 +26,21 @@ kept in `src_original/` for diffing.
 The same source builds on macOS and Linux; the manifest has `launch-macos`
 and `launch-linux` entries for those builds.
 
-- **macOS (Apple silicon):** `brew install python-tk@3.12`, then
-  `PYTHON=/opt/homebrew/bin/python3.12 ./build.sh`. Output:
-  `dist/GRTChronoImporter` (arm64, ad-hoc signed by PyInstaller).
-- **macOS (Intel):** on an Apple silicon Mac with Rosetta
-  (`softwareupdate --install-rosetta --agree-to-license`), run
+- **macOS:** `uv python install cpython-3.12-macos-aarch64-none`, then
+  `./build-mac.sh`. Output: `dist/osx-arm64/GRTChronoImporter` (arm64,
+  ad-hoc signed by PyInstaller). For Intel, install Rosetta
+  (`softwareupdate --install-rosetta --agree-to-license`) and
   `uv python install cpython-3.12-macos-x86_64-none`, then
-  `./build-mac-intel.sh`. Output: `dist/osx-x64/GRTChronoImporter` (x86_64).
-  `PYTHON=<x86_64 python3.12>` uses another Intel Python with Tk.
+  `./build-mac.sh x86_64`. Output: `dist/osx-x64/GRTChronoImporter`.
+  uv's portable Python runs on macOS 11 and newer. Don't ship a Homebrew
+  Python build: it only runs on the build Mac's macOS version or newer.
 - **Linux x64:** `./build-linux.sh` (needs Docker). It builds in Debian
   bullseye (glibc 2.31), so it runs on Ubuntu 20.04 and newer. Output:
   `dist/linux-x64/GRTChronoImporter`. Tested headless on Ubuntu 24.04 and
-  Fedora under Xvfb: it starts and connects to the host.
+  Fedora under Xvfb. On Linux the host passes `--ipcfile <socket>` (GRT's
+  Linux transport); `tests/test_grt_ipc.py` covers both transports.
+
+Tests: `python3 -I tests/test_grt_ipc.py`.
 
 GRTMultiPlatform bundles these from its `bundled-plugins/<rid>` folder.
 
